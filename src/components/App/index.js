@@ -4,7 +4,6 @@ import axios from 'axios';
 import SearchBar from '../SearchBar';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';
-import Strings from '../../utils/strings.js';
 
 const App = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -28,19 +27,6 @@ const App = () => {
     setNextPageToken(data.nextPageToken);
   };
 
-  const previewedVideoLogger = async ({id, snippet}) => {
-    await axios.post(`${Strings.loggerAPIUrl}/previewedVideo`, {
-      videoId: id.videoId,
-      title: snippet.title,
-      description: snippet.description
-    })
-    .then(() => {
-      console.log('video was logged');
-    }, (error) => {
-      console.log(error);
-    });
-  };
-
   useEffect(()=>{
     search(inputValue);
   }, []);
@@ -60,11 +46,6 @@ const App = () => {
     }
   };
 
-  const onVideoSelect = video => {
-    previewedVideoLogger(video);
-    setSelectedVideo(video);
-  }
-
   return (
     <div className="ui container">
       <SearchBar onFormSubmit={search} onInputValueChange={setInputValue} />
@@ -75,7 +56,7 @@ const App = () => {
           </div>
           <div className="six wide column">
             {videos.length > 0 && <VideoList
-              onVideoSelect={onVideoSelect}
+              onVideoSelect={setSelectedVideo}
               videos={videos}
             />}
           </div>

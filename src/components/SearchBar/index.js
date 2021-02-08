@@ -1,26 +1,14 @@
 import React, {useState} from 'react';
 import Strings from '../../utils/strings.js';
-import axios from 'axios';
 import './searchBar.scss';
 
 const SearchBar = ( {onFormSubmit, onInputValueChange} ) => {
   const [term, setTerm] = useState('');
   const [error, setError] = useState('');
 
-  const keywordLogger = async (term) => {
-    try {
-      await axios.post(`${Strings.loggerAPIUrl}/keyword`, {
-        keyword: term
-      })
-    } catch(e) {
-      console.log(e);
-    }
-  };
-
   const onSubmit = event => {
     const isNewSearch = true;
     event.preventDefault();
-    keywordLogger(term);
     onInputValueChange(term);
     onFormSubmit(term, "", isNewSearch);
   };
